@@ -1,16 +1,16 @@
 # Global parameters
 
 # Bottom view DLC params
-bot_cfg='/home/jwg356/erda/Roser_project/Tracking/DLC_model/config.yaml'        # Config file
-bot_model = 'DLC_resnet50_MultipleMarkersNov15shuffle1_4500'                    # Model name
+bot_cfg='DLC_bottom_config.yaml'        # Config file
+bot_model = 'DLC_bottom_model_name'                    # Model name
 bot_mrkr = ['snout', 'snoutL', 'snoutR', 'foreL', 'foreR','hindL', 
                 'hindR', 'torso', 'torsoL', 'torsoR', 'tail']                   # Marker ids used in DeepLabCut
 # Markers used in speed estimation. Excludes paws which are used in coordination
 speedMarkers = ['tail','snout', 'snoutL', 'snoutR', 'torso', 'torsoL', 'torsoR']
 
 #Lateral view DLC model
-lat_cfg='/home/jwg356/erda/Roser_project/Tracking/DLC_model/lateral_analysis-raghav-2020-10-26/config.yaml'
-lat_model = 'DLC_resnet50_lateral_analysisOct26shuffle1_100000'
+lat_cfg='DLC_lateral_config.yaml'
+lat_model = 'DLC_lateral_model_name'
 lat_mrkr = ['toe','foot','ankle','knee','hip','crest']
 lat_mrkr = lat_mrkr[::-1]
 
