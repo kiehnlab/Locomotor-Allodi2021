@@ -20,8 +20,6 @@ def plotDragReco(xAxis,accMean,drgIdx,recIdx,
     plt.plot(xAxis,np.zeros(len(xAxis)),'--k')
     plt.xlabel('Duration in s')
     plt.ylabel('Acceleration in cm/s2')
-    # plt.plot(xAxis,pAcc,'-k')
-    # plt.plot(xAxis,nAcc,'-k')
     for i in range((drgIdx.shape[1])):
         sIdx = drgIdx[0,i]
         lIdx = drgIdx[1,i]
@@ -79,8 +77,6 @@ def countDragReco(nAcc,pAcc,xAxis):
 
 def estimateAccel(speedMean, meta):
 
-#    accSmFactor = int(meta['fps']*tThr)
-
     accMean = np.diff(speedMean)
     accMean = np.convolve(accMean, np.ones((accSmFactor,))/accSmFactor, mode='valid')
     xAxis = np.linspace(0,meta['dur'],len(accMean))
@@ -107,7 +103,6 @@ def analyseDragRec(drgIdx,recIdx,fps,tThr):
     return dragCount, recCount, drgDur, recDur, drgIdx, recIdx
 
 def accelProfiler(data_path,saveFlag=False,log=False,plotFlag=False):
-#    pdb.set_trace()
     eps = 1e-6
     os.chdir(data_path)
     files = sorted(glob.glob('*.npy'))

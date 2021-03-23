@@ -21,7 +21,6 @@ def groupPlot(phi,r,fig,gNames):
     ax.set_axisbelow(True)
     ax.set_theta_offset(np.pi/2)
     ax.grid(linewidth=3)
-#    pdb.set_trace()
     for i in range(len(phi)):
         lColor = colors[np.where(days==gNames[i].split('_')[0])[0][0]]
         lFill = fillstyles[np.where(groups==gNames[i].split('_')[1])[0][0]]
@@ -41,7 +40,6 @@ def circularPlot(phi, pairName, fig, gs,row=0,col=0):
     ax.set_rlim(0,1.1)
     ax.spines['polar'].set_visible(False)
     ax.set_axisbelow(True)
-#    pdb.set_trace()
     ax.set_theta_offset(np.pi/2)
     T = (len(phi) if len(phi) > 1 else 1)
 
@@ -49,12 +47,9 @@ def circularPlot(phi, pairName, fig, gs,row=0,col=0):
     ax.annotate("",xytext=(0.0,0.0),xy=(meanPhi,r),
             arrowprops=dict(color='tab:red',lw=3,width=0.5,fill='full'))
     ax.plot((0,meanPhi),(0,r),color='tab:red') #label=legends[vNum],color=colors[vNum])
-#    plt.legend() 
     return fig
 
 def cadencePlot(movDur, lStride, rStride, fig, gs,circPlot=True):
-    #    plt.box(False)
-#    pdb.set_trace()
     lSMean = iqrMean(lStride)
     rSMean = iqrMean(rStride)
 
@@ -63,10 +58,6 @@ def cadencePlot(movDur, lStride, rStride, fig, gs,circPlot=True):
     T = len(lStride)
     xAxis = np.linspace(0,movDur,T)
 
-#    phi, R, meanPhi, N = heurCircular(xAxis,stride,sMean)
-#    if circPlot:
-#       fig = circularPlot(phi,R,fig,gs,1)
-
     ax = fig.add_subplot(gs[0,:])
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
@@ -74,7 +65,6 @@ def cadencePlot(movDur, lStride, rStride, fig, gs,circPlot=True):
     plt.plot(xAxis,stride,label='Relative position of hind limbs')
     plt.xlabel('Duration (s)')
     plt.ylabel('Stride length (mm)')
-#    idx = np.where(np.diff(stride > sMean) == True)[0]
     _,idx = measureCycles(stride)
     plt.plot(xAxis[idx],stride[idx],'o',label='Possible full cycle',markersize=4)
     plt.plot(xAxis,np.ones(T)*sMean,'--',color='dimgrey',label='Mean crossing point')
@@ -85,8 +75,6 @@ def cadencePlot(movDur, lStride, rStride, fig, gs,circPlot=True):
     
 def plotSpeedProfile(vid, meta, beltSpeed, avgSpeed,
                      speedMean, speedStd, fig, gs):
-#    plt.clf()
-#    plt.figure(figsize=(16,10))
     ax = fig.add_subplot(gs[0,:])
     newFrame = speedMean.size
     xAxis = np.linspace(0,meta['dur'],newFrame)
@@ -100,8 +88,6 @@ def plotSpeedProfile(vid, meta, beltSpeed, avgSpeed,
     plt.title('Analysis for '+vid.split('.')[0]+
               '\n Belt Speed: %.2f cm/s \n Avg. Speed: %.2f cm/s'%(beltSpeed/10,avgSpeed))
     plt.legend()
-#    if saveFlag:
-#   plt.savefig(spProfLoc+vid.split('.avi')[0]+'_speedProfile.pdf')
     return fig
 
 def coordinationPlot(data_path):
@@ -112,7 +98,6 @@ def coordinationPlot(data_path):
     Using the tracks from DeepLabCut estimate the speed of the animal
     and estimate the instantaneous acceleration.
     """
-#    pdb.set_trace()
     fig = plt.figure(figsize=(16,10))
     gs = GridSpec(2,2,figure=fig,hspace=0.3)
     nVid = len(dataFiles)
@@ -142,7 +127,6 @@ def combinedPlot(data_path):
     Using the tracks from DeepLabCut estimate the speed of the animal
     and estimate the instantaneous acceleration.
     """
-#    pdb.set_trace()
     os.chdir(data_path)
     files = sorted(glob.glob('*_Profile.npy'))
     uniqF = [f.split('_0deg')[0] for f in files];

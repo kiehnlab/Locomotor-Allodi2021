@@ -27,8 +27,6 @@ def process_view(data,config,analyze_video,label_video):
     if os.path.exists(dest):
         if analyze_video:
             print("Found directory with labels... Overwriting them....")
-    #        shutil.rmtree(dest) 
-    #        os.mkdir(dest)
     else:
          os.mkdir(dest)
 
@@ -43,7 +41,6 @@ def process_view(data,config,analyze_video,label_video):
             labvid_dir=data+'labeled_videos'
         if os.path.exists(labvid_dir):
             print("Found directory with labelled videos... Overwriting if labels exist....")
-#            shutil.rmtree(labvid_dir) 
         else:
             os.mkdir(labvid_dir)
             

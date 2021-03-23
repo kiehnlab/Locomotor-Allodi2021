@@ -18,7 +18,6 @@ from utils.constants import df_cols
 ############## Speed analysis ##########
 
 def estimateSpeed(ipFile,beltSpeed,meta,vid):
-#    model = ipFile.split('cms')[1].split('.')[0]
     data = pd.read_hdf(ipFile)
     time = 1/meta['fps'] # interval between successive frames in s
     speedAll = []

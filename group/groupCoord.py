@@ -16,7 +16,6 @@ import matplotlib.pyplot as plt
 from constants import locKeys
 import itertools
 from pycircstat import watson_williams
-#from scipy.stats import circmean
 from tools import circular_mean as circmean
 import pandas as pd
 
@@ -42,7 +41,6 @@ def sampleSteps(phi,N,discrete=False,disc_ang=30):
         ratio = int(np.ceil(N*(len(uPhi)+1)/(len(lPhi)+1)-1))
         phi = np.concatenate((uPhi[:ratio],lPhi[:(N-ratio)]))
     else:
-#        pdb.set_trace()
         ratio = int(np.ceil(N*(len(lPhi)+1)/(len(uPhi)+1)-1))
         phi = np.concatenate((lPhi[:ratio],uPhi[:(N-ratio)]))
 
@@ -122,7 +120,6 @@ seeds = [0,9,6,401,101]
 df = pd.DataFrame(columns=['tmp'],index=np.arange(10))
 df.to_excel('allCircularData.xlsx')
 
-#for kIdx in range(1,len(limbPair)):
 for kIdx in range(5):
 
     limbs = limbPair[kIdx]
@@ -132,14 +129,11 @@ for kIdx in range(5):
     for data_dir in dirs[cIdx:]:
         print("\nCONDITION#",cIdx+1)
         np.random.seed(seeds[kIdx])
-#        if 'Pre-sym' in data_dir: # or '_CNO' in args.data:
-#            np.random.seed(400)
         print("#########################\nAnalyzing coordination for "\
               +data_dir+"\nUsing %d steps"%args.steps+\
               "\n#########################")
         data_dir = args.data+data_dir
         ### Process DLC tracks to obtain the speed profiles
-#        pdb.set_trace()
         groups = list(set(glob.glob(data_dir+'*')) - set(glob.glob(data_dir+'*.pdf')))
         groups = sorted(groups)
         gNames = [g.split('/')[-1] for g in groups]
@@ -170,12 +164,10 @@ for kIdx in range(5):
                 data = processDict(files)
                 groupData = groupSteps(data,files,args.steps,key=limbs)
                 studyData.append(groupData)
-#            pVal[pIdx], table = watson_williams(circmean(studyData[0],axis=2),circmean(studyData[1],axis=2))
             pVal[pIdx], table = watson_williams(studyData[0],studyData[1])
 
             print("\nSignificance test for "+groups[0]+' and '+groups[1]+' with (p=0.05)')
             print("p=%.4f "%pVal[pIdx],[pVal[pIdx]<0.05])
-#            print(pVal[pIdx],pVal[pIdx]<0.05)
             pIdx += 1
         fig = plt.figure(figsize=(16,10))
         df = pd.DataFrame(index=np.arange(50))
@@ -188,7 +180,6 @@ for kIdx in range(5):
             data = processDict(files)
             groupData = groupSteps(data,files,args.steps,key=limbs)
 
-#            pdb.set_trace()
             popDataPhi = [(circmean(groupData[0][i])[0]*180/np.pi % 360) for i in range(groupData.shape[1])]
             popDataR = [circmean(groupData[0][i])[1] for i in range(groupData.shape[1])]
 
@@ -201,7 +192,6 @@ for kIdx in range(5):
             fig,groupPhi[gIdx],groupR[gIdx] = meanVector(data,files,fig,
                                                      colors[cIdx],gIdx,key=limbs,scatter=True)
 
-#        pdb.set_trace()
         with pd.ExcelWriter('allCircularData.xlsx',engine='openpyxl',mode='a') as writer:
                 df.to_excel(writer,sheet_name=data_dir.split('/')[-2]+'_'+locKeys[kIdx],index=False,float_format="%.4f")
 
@@ -210,7 +200,6 @@ for kIdx in range(5):
         plt.legend(loc='upper left',bbox_to_anchor=(-0.05, 1.08),frameon=False)
         ax = fig.add_subplot(111,polar=False)
         ax = plt.gca()
-#        pdb.set_trace()
         for i in range(pIdx):
             if pVal[i] < 0.005:
                 sig = '**'
@@ -232,5 +221,4 @@ for kIdx in range(5):
                 ax = con_style(ax,idx=i,sig=sig,xOf=xOf)
         ### Annotate significance lines
         plt.savefig(args.data+data_dir.split('/')[-2]+'_'+locKeys[kIdx]+'.pdf')
-#        pdb.set_trace()
         cIdx += 1

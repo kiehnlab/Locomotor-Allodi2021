@@ -73,7 +73,6 @@ for ipFile in files:
         sMax = stride.max()
         T = len(lStride)
 
-#        pdb.set_trace()
         if args.start > 0:
             idx = int(args.start/meta['dur']*newFrame)
             speedMean = speedMean[idx:]
@@ -116,7 +115,6 @@ for ipFile in files:
         idx = idx.reshape(-1,2)[:,0]
 
 
-#        pdb.set_trace()
         ### Perform acceleration analysis
         accMean, drgIdx, recIdx, _ = estimateAccel(speedMean,meta)
         dragCount, recCount, drgDur, recDur, drgIdx, recIdx = \
@@ -191,7 +189,6 @@ for ipFile in files:
         for i,j,fNum,m in zip(np.arange(0,newFrame,skipFrame),
                              cadIdx,np.arange(sFrame,eFrame,skipFrame),
                              np.arange(0,accMean.shape[0],skipFrame)):
-#                m += accSmFactor
 
                 if (j >= idx[k+1]) and (k < len(idx)):
                         k += 1
@@ -233,8 +230,6 @@ for ipFile in files:
                 plt.plot(aAxis[:m],accMean[:m],color='lightgray',
                         label='Instantaneous acceleration',linewidth=4)
                 if m > 0:
-#                    if m == 168:
-#                        pdb.set_trace()
                     accMax = np.argmax(accMean[:m])+1
                     plt.plot(aAxis[accMax],accMean[accMax],marker='^',
                              markersize=12,linestyle='',
@@ -244,7 +239,6 @@ for ipFile in files:
                     if m >= drgIdx[1,dIdx+1]:
                         dIdx += 1
                 for d in range(dIdx+1):
-#                    pdb.set_trace()
                    
                     sIdx = drgIdx[0,d] #+ accSmFactor
                     lIdx = drgIdx[1,d] #+ accSmFactor
@@ -295,20 +289,16 @@ for ipFile in files:
                 plt.xlim([0,5.5])
 
                 if k > -1:
-#                        pdb.set_trace()
                         plt.plot(cAxis[idx[:k+1]],stride[idx[:k+1]],
                                 'o',label='Possible full cycle',
                                 markersize=12,c='crimson')
 
                         plt.legend(loc='upper right',prop={'size': 16})
                         ax = plt.subplot(gs[2,2:],polar=True)
-#                       pdb.set_trace()
                         ax.clear()
                         ax = plt.subplot(gs[2,2:],polar=True)
 
-#                       ax.cla()
                         
-#                       ax = plt.subplot(gs[1:,2:],polar=True)
                         ax.scatter(phi[:k+1],np.ones(k+1),marker='o',
                                    s=250,c='royalblue') 
                         ax.scatter(phi[k],np.ones(1),marker='o',
@@ -318,11 +308,6 @@ for ipFile in files:
                         ax.plot((0,circmean(phi[:k+1])),(0,R),color=colors[-1])
 
                         plt.title('Left-Right Alternation Profile',fontdict={'size':18})# for '+videoName)
-#               else:
-#                       ax = plt.subplot(gs[1:,2:],polar=True)
-#                       ax.cla()
-#                       ax.set_theta_offset(np.pi/2)                    
-#                       ax.scatter(0,0,marker='o',s=100,c='crimson')
                 ax.set_rlabel_position(25)
                 ax.set_rlim(0,1.1)
                 ax.set_theta_offset(np.pi/2)

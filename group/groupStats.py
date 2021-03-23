@@ -8,7 +8,6 @@ import argparse
 import pdb
 import pickle
 import os
-#from coord import coordProfiler, meanVector, groupPlot
 from constants import locKeys
 import numpy as np
 from combinedPlot import processDict
@@ -34,7 +33,6 @@ def densitySample(phi,N,bins):
     pdf, levels, _ = plt.hist(phi,bins=bins)
     levels = np.concatenate((levels.reshape(-1),np.array([levels.sum()])))
 
-#    pdb.set_trace()
     pdf = pdf/pdf.sum()
     stepDist = (np.round(pdf*N)).astype(int)
     if stepDist.sum() != N:
@@ -54,7 +52,6 @@ def sampleSteps(phi,N,discrete=False):
     Sample steps matching the distribution between the upper and lower
     halves of the circle
     """
-#    pdb.set_trace()
     if discrete:
         phi = phi/PI*180
         phi = phi + (30 - phi % 30)
@@ -67,7 +64,6 @@ def sampleSteps(phi,N,discrete=False):
         ratio = int(np.ceil(N*(len(uPhi)+1)/(len(lPhi)+1)-1))
         phi = np.concatenate((uPhi[:ratio],lPhi[:(N-ratio)]))
     else:
-#        pdb.set_trace()
         ratio = int(np.ceil(N*(len(lPhi)+1)/(len(uPhi)+1)-1))
         phi = np.concatenate((lPhi[:ratio],uPhi[:(N-ratio)]))
 
@@ -87,20 +83,13 @@ def groupSteps(data,files,nSteps,key='h',T=1,bins=2):
                 animSteps = np.concatenate((animSteps,data['phi_'+key][anim]))
             animSteps = animSteps[1:]
             nA = len(animSteps)
-    #        assert nA >= nSteps, 'Only %d steps found! Consider reducing nSteps to use.'%nA
             if nA <= nSteps: #or nA <= bins:
-#                pdb.set_trace()
                 if nA <= nSteps:
                     nSteps = nA
                     print("Using %d steps"%nSteps)
                 groupData[t,i,:nSteps] = animSteps[:nSteps]
 
-#            animIdx = np.random.permutation(np.arange(sIdx,nA-sIdx))
-#            groupData[t,i,:nSteps] = animSteps[animIdx[:nSteps]] 
-#            print("Using %d steps"%nSteps)
-
             else:
-    #            groupData[t,i,:nSteps] = densitySample(animSteps,nSteps,bins) 
                 groupData[t,i,:nSteps] = sampleSteps(animSteps,nSteps) 
 
     return groupData
@@ -136,7 +125,6 @@ for data_dir in dirs:
     data_dir = args.data+data_dir
     ### Process DLC tracks to obtain the speed profiles
 
-#    pdb.set_trace()
     groups = list(set(glob.glob(data_dir+'*')) - set(glob.glob(data_dir+'*.pdf')))
     groups = sorted(groups)
     groupR = np.zeros(len(groups))
@@ -174,23 +162,14 @@ for data_dir in dirs:
                     popNp = np.empty((2,50))
                     popNp[:] = np.nan
 
-#                    pdb.set_trace()
                     for j in range(2):
                         popData = [circmean(studyData[j][t][i]) for i in range(studyData[j][t].shape[0])]
                         popNp[j,:len(popData)] = popData
                         df[groups[j]] = popNp[j]
 
-    #            print('Trial %d: p-value for groups '%(t)+groups[0]+' and '+groups[1]+': %.4f'%(pVal[t]))
 
-    #        pdb.set_trace()
             levels, pAdj,_, p = multipletests(pVal,alpha=args.alpha)
             print("\nSignificance test for "+groups[0]+' and '+groups[1]+' with (p=%.4f)'%args.alpha)
             with pd.ExcelWriter('allData.xlsx',engine='openpyxl',mode='a') as writer:
                 df.to_excel(writer,sheet_name=groups[0]+' vs '+groups[1],index=False)
-    #        print("Before Bonferroni correction (p=%.4f)"%args.alpha)
             print(pVal,levels)
-    #        if args.trial > 1:
-    #            print("After Bonferroni correction:")# (p=%.4f)"%p)
-    #            print(pAdj)
-    #            print("%d/%d trials are significant"%(len(levels[levels==True]),args.trial))
-#            print(levels)

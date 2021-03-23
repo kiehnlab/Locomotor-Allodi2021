@@ -40,8 +40,6 @@ def processDict(dFiles):
         for key,value in data.items():
             allData[key] = allData[key]+[value]
 
-#    for k in keys:
-#        allData[k] = np.hstack(allData[k])
     return allData
 
 def videoMetadata(vid):

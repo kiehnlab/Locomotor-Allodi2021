@@ -7,7 +7,6 @@ warnings.filterwarnings("ignore")
 import os
 import matplotlib.pyplot as plt
 from utils.tools import videoMetadata
-#from speed import estimateSpeed
 from utils.constants import *
 from scipy.stats import circmean
 from matplotlib.gridspec import GridSpec
@@ -40,7 +39,6 @@ params = {'font.size': 14,
           'axes.labelweight':'bold',
           'axes.titleweight':'bold',
           'legend.fontsize': 12,
-#          'legend.fontweight': 'bold',
          }
 matplotlib.rcParams.update(params)
 
@@ -103,12 +101,8 @@ def meanVector(data,files,fig,cScheme,gName,key='h',scatter=False):
     return fig, meanPhi, meanR
 
 def heurCircular(xAxis,stride,sMean,idxFlag=False):
-#    idx = np.where(np.diff(stride > sMean)==True)[0]
     newIdx = measureCycles(stride)[1]
     stride = 2*(stride-stride.min())/ (stride.max()-stride.min()) - 1
-#    if len(idx) % 2 != 0: 
-#        idx = idx[:-1]
-#    newIdx = idx.reshape(-1,2)[:,0]
     N = len(newIdx)
     phi = np.zeros(N-1)
 
@@ -120,7 +114,6 @@ def heurCircular(xAxis,stride,sMean,idxFlag=False):
         x = np.linspace(0,2*np.pi,len(y))
         phi[i] = ((4-np.trapz(y,x)) * np.pi/4) #% 2*np.pi
 
-#    pdb.set_trace()
     meanPhi,r = circular_mean(phi)
     if idxFlag: 
         return phi, r, meanPhi, N, idx
@@ -130,7 +123,6 @@ def heurCircular(xAxis,stride,sMean,idxFlag=False):
 
 def bodyPosCoord(ipFile,speedMean,avgSpeed, meta):
 
-#    model = ipFile.split('cms')[1].split('.')[0]
     data = pd.read_hdf(ipFile)
     
     fL = np.asarray(data[model][mrkr[3]]['x'])

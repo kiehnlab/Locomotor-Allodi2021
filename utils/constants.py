@@ -29,7 +29,6 @@ tThr = 0.25 # Duration to count a drag/recovery event
 accSmFactor = 12
 # Location to save speedProfiles
 spProfLoc = '../all_profiles/'
-#spProfLoc = '../speedProfile'
 acProfLoc = '../accelProfile'
 cdProfLoc = '../coordProfile'
 

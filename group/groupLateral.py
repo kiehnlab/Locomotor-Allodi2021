@@ -20,7 +20,6 @@ params = {'font.size': 14,
           'axes.labelweight':'bold',
           'axes.titleweight':'bold',
           'legend.fontsize': 12,
-#          'legend.fontweight': 'bold',
          }
 matplotlib.rcParams.update(params)
 
@@ -56,15 +55,8 @@ for gIdx in range(len(groups)):
         dAng = maxAng-minAng
         dAng[dAng > 120] = 120
 
-        ### Use random subset of steps
-#        idx = np.random.permutation(args.steps)
-#        angles = angles[:,idx,:]
-#        dAng = dAng[:,idx]
-
         ### Use sorted angles
-#        sortIdx = np.argsort(dAng,axis=1)[:,::-1]
         sortIdx = np.argsort(maxAng,axis=1)[:,::-1]
-#        sortIdx = np.argsort(minAng,axis=1)[:,::-1]
 
         angles = np.array([angles[i,sortIdx[i][:args.steps]] for i in range(4)])
         dAng = np.array([dAng[i,sortIdx[i][:args.steps]] for i in range(4)])
@@ -78,7 +70,6 @@ for gIdx in range(len(groups)):
 
 ### Make grid plots
 fig=plt.figure(figsize=(24,12))
-#plt.title("Comparison of limb coordination with nSteps=%d"%args.steps)
 gs = GridSpec(4,7,figure=fig,hspace=0.5,wspace=0.5)
 T=angles.shape[-1]
 df = pd.DataFrame(columns=['tmp'],index=np.arange(10))
@@ -87,7 +78,6 @@ df.to_excel('allLateralData.xlsx')
 for gIdx in range(len(groups)):
     for j in range(len(joints)):
         ax = fig.add_subplot(gs[j,gIdx])
-#        pdb.set_trace()
         nAnim = len(gAngles[group_names[gIdx]])        
                 
         mAng = gAngles[group_names[gIdx]][:,j,:].reshape(-1,T).mean(0)
@@ -109,8 +99,6 @@ for gIdx in range(len(groups)):
             plt.title(group_names[gIdx]+', N=%d'%(nAnim))
         if j == 3:
             plt.xlabel('Normalized cycle')
-#        else:
-#            plt.ylim([30,135])
         plt.ylim([5,185])
 
 for j in range(len(joints)):
@@ -119,13 +107,7 @@ for j in range(len(joints)):
     rv = [stats.norm.rvs(loc=boxData[i].mean()/0.75,scale=boxData[i].std()/3,\
             size=boxData[i].shape[0]//args.steps) for i in range(len(boxData))]
 
-#    pdb.set_trace()
     boxData = rv
-
-#    rv1 = stats.norm.rvs(loc=boxData[0].mean(),scale=boxData[0].std(),size=boxData[0].shape[0]//args.steps)
-#    rv2 = stats.norm.rvs(loc=boxData[1].mean(),scale=boxData[1].std(),size=boxData[1].shape[0]//args.steps)
-#    rv3 = stats.norm.rvs(loc=boxData[2].mean(),scale=boxData[2].std(),size=boxData[2].shape[0]//args.steps)
-#    rv4 = stats.norm.rvs(loc=boxData[3].mean(),scale=boxData[3].std(),size=boxData[3].shape[0]//args.steps)
 
     mSize = np.max([boxData[i].shape[0] for i in range(len(boxData))])
     df = pd.DataFrame(columns=group_names,index=np.arange(mSize))
@@ -140,7 +122,6 @@ for j in range(len(joints)):
     print('Before-CNO vs After-CNO: %.4f' %pval)
     ax = fig.add_subplot(gs[j,-3:])
     plt.boxplot(boxData)
-#    plt.ylim([25,120])
     if j == 0:
         plt.title("Max-min angles averaged over steps and animals")
     if j == 3:

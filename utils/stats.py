@@ -8,7 +8,6 @@ import argparse
 import pdb
 import pickle
 import os
-#from coord import coordProfiler, meanVector, groupPlot
 from utils.constants import locKeys
 import numpy as np
 from vis.plotter import processDict
@@ -24,12 +23,10 @@ def densitySample(phi,N,bins):
     """
     Sample steps matching the actual distribution
     """
-#    pdb.set_trace()
     phi = phi[np.random.permutation(len(phi))]
     pdf, levels = np.histogram(phi,bins=bins)
     levels = np.concatenate((levels.reshape(-1),np.array([levels.sum()])))
 
-#    pdb.set_trace()
     pdf = pdf/pdf.sum()
     stepDist = (np.round(pdf*N)).astype(int)
     if stepDist.sum() != N:
@@ -49,8 +46,6 @@ def medianSamples(phi,N):
     Sample steps matching the distribution on either side of median angle
     Use median step angle and sample N/2 on either side
     """
-#    pdb.set_trace()
-#    phi = phi[np.random.permutation(len(phi))]
     phi = np.sort(phi)
     medAng = np.median(phi)
     lIdx = (phi >= medAng) 
@@ -81,7 +76,6 @@ def sampleSteps(phi,N,discrete=False):
         ratio = int(np.ceil(N*(len(uPhi)+1)/(len(lPhi)+1)-1))
         phi = np.concatenate((uPhi[:ratio],lPhi[:(N-uPhi[:ratio].shape[0])]))
     else:
-#        pdb.set_trace()
         ratio = int(np.ceil(N*(len(lPhi)+1)/(len(uPhi)+1)-1))
         phi = np.concatenate((lPhi[:ratio],uPhi[:(N-lPhi[:ratio].shape[0])]))
     phiRet = np.zeros(N)
@@ -93,7 +87,6 @@ def groupSteps(data,files,nSteps,key='h',T=1,bins=2):
     uniq = np.unique(files)
     N = len(uniq)
     groupData = np.zeros((T,N,nSteps))
-#    pdb.set_trace()
     for t in range(T):
         for i in range(len(uniq)):
             animSteps = np.zeros(1)
@@ -102,24 +95,13 @@ def groupSteps(data,files,nSteps,key='h',T=1,bins=2):
                 animSteps = np.concatenate((animSteps,data['phi_'+key][anim]))
             animSteps = animSteps[1:]
             nA = len(animSteps)
-    #        assert nA >= nSteps, 'Only %d steps found! Consider reducing nSteps to use.'%nA
             if nA <= nSteps: #or nA <= bins:
-#                pdb.set_trace()
                 if nA <= nSteps:
                     nSteps = nA
                     print("Using %d steps"%nSteps)
                 groupData[t,i,:nSteps] = animSteps[:nSteps]
 
-#            animIdx = np.random.permutation(np.arange(sIdx,nA-sIdx))
-#            groupData[t,i,:nSteps] = animSteps[animIdx[:nSteps]] 
-#            print("Using %d steps"%nSteps)
-
             else:
-#                 pdb.set_trace()
-#                 groupData[t,i,:nSteps] = densitySample(animSteps,nSteps,bins) 
-#                 groupData[t,i,:nSteps] = sampleSteps(animSteps,nSteps)
-#                 groupData[t,i,:nSteps] = medianSamples(animSteps,nSteps)
-
                  groupData[t,i,:nSteps] = np.sort(animSteps)[:nSteps]
 
     return groupData

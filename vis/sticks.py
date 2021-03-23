@@ -88,7 +88,6 @@ def makeStickFigure(x,y,dist,dur,fName,cyc_angles,peaks,\
                 plt.plot(x[i]+step,y[i]+0.1,'tab:grey',linewidth=0.25)
         plt.axis('off')
         plt.ylim([-1,1.1])
-#    t = np.linspace(0,dur,len(angles[0]))[::-1]
     plt.savefig(dest+fName.replace('.avi','.pdf'))
 
     return
