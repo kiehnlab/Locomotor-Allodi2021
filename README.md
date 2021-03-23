@@ -14,5 +14,5 @@ V1-interneuron connections onto fast motor neurons”](https://www.biorxiv.org/c
 
 ### Who do I talk to? ###
 
-* raghav@di.ku.dk
+* iallodi@sund.ku.dk, raghav@di.ku.dk
 
